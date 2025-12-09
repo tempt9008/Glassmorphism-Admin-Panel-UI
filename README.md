@@ -2,6 +2,14 @@
 
 Modern, full-featured admin dashboard with stunning glassmorphism design. Built with Next.js 15 and React 19. Features comprehensive management interface for courses, bootcamps, e-books, enrollments, and more.
 
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Settings - Theme Customization
+![Settings](screenshots/settings.png)
+
 ## Tech Stack
 
 | Category | Technologies |
