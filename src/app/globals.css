@@ -540,11 +540,9 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Glass Dropdown - Glassmorphism with better blur */
+/* Glass Dropdown - Solid background, no transparency */
 .glass-dropdown {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--theme-bg-color);
+  border: 1px solid rgba(255, 255, 255, var(--glass-border-opacity));
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
