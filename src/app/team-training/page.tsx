@@ -3,29 +3,18 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Header } from "@/components/layout"
-import { GlassCard, GlassButton, GlassInput, GlassModal } from "@/components/glass"
-import { DataTable } from "@/components/shared"
+import { GlassButton, GlassInput, GlassModal } from "@/components/glass"
+import { DataTable, PageLayout } from "@/components/shared"
 import { teamTrainingData } from "@/lib/mock-data"
 import {
-  Plus,
-  Search,
   Building2,
   Users,
   Calendar,
   Edit,
   Trash2,
-  TrendingUp,
-  Filter
+  TrendingUp
 } from "lucide-react"
 import { navigationTabs } from "@/lib/navigation"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 interface TeamTraining {
   id: number
@@ -193,100 +182,25 @@ export default function TeamTrainingPage() {
     <div className="min-h-screen pb-8">
       <Header title="Team Training" tabs={navigationTabs} />
 
-      <div className="px-4 sm:px-6 space-y-4 sm:space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Programs</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{trainings.length}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Companies</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{trainings.length}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Employees</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{totalEmployees}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Progress</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{avgProgress}%</p>
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        {/* Actions Bar */}
-        <GlassCard className="p-4">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-              <div className="relative flex-1 min-w-0">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                <GlassInput
-                  placeholder="Search..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg glass-button text-[var(--text-secondary)] hover:text-white transition-colors flex-shrink-0">
-                    <Filter className="w-4 h-4" />
-                    <span className="hidden sm:inline">Filter</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="glass-dropdown border-[rgba(255,255,255,var(--glass-border-opacity))]">
-                  <DropdownMenuLabel className="text-[var(--text-tertiary)]">Filter by Progress</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    All Programs
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    In Progress
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Completed
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <GlassButton variant="primary" onClick={handleAddNew} className="flex-shrink-0">
-              <Plus className="w-4 h-4" />
-              <span className="hidden sm:inline">Add Program</span>
-              <span className="sm:hidden">Add</span>
-            </GlassButton>
-          </div>
-        </GlassCard>
-
-        {/* Training Table */}
-        <DataTable columns={columns} data={filteredTrainings} />
+      <div className="px-4 sm:px-6">
+        <PageLayout
+          stats={[
+            { icon: Calendar, label: "Programs", value: trainings.length },
+            { icon: Building2, label: "Companies", value: trainings.length },
+            { icon: Users, label: "Employees", value: totalEmployees },
+            { icon: TrendingUp, label: "Progress", value: `${avgProgress}%` }
+          ]}
+          searchPlaceholder="Search programs..."
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterGroups={[
+            { label: "Filter by Progress", options: ["All Programs", "In Progress", "Completed"] }
+          ]}
+          addButtonLabel="Add Program"
+          onAddClick={handleAddNew}
+        >
+          <DataTable columns={columns} data={filteredTrainings} />
+        </PageLayout>
       </div>
 
       {/* Add/Edit Modal */}

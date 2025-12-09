@@ -2,30 +2,19 @@
 
 import { useState } from "react"
 import { Header } from "@/components/layout"
-import { GlassCard, GlassButton, GlassInput, GlassModal } from "@/components/glass"
-import { DataTable } from "@/components/shared"
+import { DataTable, PageLayout } from "@/components/shared"
 import { enrollmentsData } from "@/lib/mock-data"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import {
-  Search,
   UserPlus,
   Mail,
   Calendar,
   DollarSign,
   CheckCircle,
   XCircle,
-  Clock,
-  Filter
+  Clock
 } from "lucide-react"
 import { navigationTabs } from "@/lib/navigation"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 interface Enrollment {
   id: number
@@ -41,14 +30,11 @@ interface Enrollment {
 export default function EnrollmentsPage() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>(enrollmentsData)
   const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
 
-  const filteredEnrollments = enrollments.filter(e => {
-    const matchesSearch = e.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.course.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesStatus = statusFilter === "all" || e.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+  const filteredEnrollments = enrollments.filter(e =>
+    e.student.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    e.course.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const handleApprove = (id: number) => {
     setEnrollments(enrollments.map(e =>
@@ -162,110 +148,23 @@ export default function EnrollmentsPage() {
     <div className="min-h-screen pb-8">
       <Header title="Enrollments" tabs={navigationTabs} />
 
-      <div className="px-4 sm:px-6 space-y-4 sm:space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <UserPlus className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Enrollments</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{enrollments.length}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Active</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{activeCount}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Pending</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{pendingCount}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Revenue</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">${(totalRevenue / 1000).toFixed(0)}k</p>
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        {/* Actions Bar */}
-        <GlassCard className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                <GlassInput
-                  placeholder="Search enrollments..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg glass-button text-[var(--text-secondary)] hover:text-white transition-colors flex-shrink-0">
-                    <Filter className="w-4 h-4" />
-                    <span className="hidden sm:inline">Filter</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="glass-dropdown border-[rgba(255,255,255,var(--glass-border-opacity))]">
-                  <DropdownMenuLabel className="text-[var(--text-tertiary)]">Filter by Status</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setStatusFilter("all")}
-                  >
-                    All Status
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setStatusFilter("active")}
-                  >
-                    Active
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setStatusFilter("pending")}
-                  >
-                    Pending
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setStatusFilter("completed")}
-                  >
-                    Completed
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </GlassCard>
-
-        {/* Enrollments Table */}
-        <DataTable columns={columns} data={filteredEnrollments} />
+      <div className="px-4 sm:px-6">
+        <PageLayout
+          stats={[
+            { icon: UserPlus, label: "Enrollments", value: enrollments.length },
+            { icon: CheckCircle, label: "Active", value: activeCount },
+            { icon: Clock, label: "Pending", value: pendingCount },
+            { icon: DollarSign, label: "Revenue", value: `$${(totalRevenue / 1000).toFixed(0)}k` }
+          ]}
+          searchPlaceholder="Search enrollments..."
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterGroups={[
+            { label: "Filter by Status", options: ["All Status", "Active", "Pending", "Completed"] }
+          ]}
+        >
+          <DataTable columns={columns} data={filteredEnrollments} />
+        </PageLayout>
       </div>
     </div>
   )

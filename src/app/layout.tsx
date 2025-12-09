@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/contexts/theme-context"
 import { ThemeScript } from "@/components/theme-script"
+import { HydrationFix } from "@/components/hydration-fix"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,7 +22,8 @@ export default function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning>
+        <HydrationFix />
         <ThemeProvider>
           <main className="min-h-screen">
             {children}

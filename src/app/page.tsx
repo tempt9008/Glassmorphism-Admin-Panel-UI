@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
 import { Header } from "@/components/layout"
 import { StatsRow } from "@/components/shared"
 import { AreaChart, DonutChart } from "@/components/charts"
@@ -42,6 +43,36 @@ import {
 } from "lucide-react"
 
 const bestSellingCourses = [...topCourses].sort((a, b) => b.sales - a.sales)
+
+// Staggered animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: -15,
+    scale: 0.95
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 24
+    }
+  }
+}
 
 export default function Dashboard() {
   const [courseTab, setCourseTab] = useState<'top' | 'best'>('top')
@@ -161,11 +192,17 @@ export default function Dashboard() {
                   </Select>
                 </div>
               </div>
-              <div className="space-y-2 sm:space-y-3">
-                {withdrawalRequests.map((request, index) => (
-                  <div
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="space-y-2 sm:space-y-3"
+              >
+                {withdrawalRequests.map((request) => (
+                  <motion.div
                     key={request.id}
-                    className={`flex items-center justify-between p-2 sm:p-3 rounded-xl hover:bg-[rgba(255,255,255,var(--ui-opacity-5))] transition-all duration-300 animate-fade-in stagger-${index + 1}`}
+                    variants={itemVariants}
+                    className="flex items-center justify-between p-2 sm:p-3 rounded-xl hover:bg-[rgba(255,255,255,var(--ui-opacity-5))] transition-colors duration-300"
                   >
                     <div className="flex items-center gap-2 sm:gap-3">
                       <Avatar className="w-8 h-8 sm:w-10 sm:h-10 border border-[rgba(255,255,255,var(--glass-border-opacity))]">
@@ -190,9 +227,9 @@ export default function Dashboard() {
                         <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                       </Button>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </GlassCard>
         </div>
@@ -227,30 +264,39 @@ export default function Dashboard() {
                   <Maximize2 className="w-3 h-3 sm:w-4 sm:h-4" />
                 </Button>
               </div>
-              <div className="space-y-2">
-                {displayedCourses.map((course, index) => (
-                  <div
-                    key={course.id}
-                    className={`flex items-center justify-between p-2 sm:p-3 rounded-xl hover:bg-[rgba(255,255,255,var(--ui-opacity-5))] transition-all duration-300 animate-fade-in stagger-${index + 1}`}
-                  >
-                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden bg-[rgba(255,255,255,var(--ui-opacity-5))] border border-white/[0.04] flex-shrink-0">
-                        <Image
-                          src={course.image}
-                          alt={course.name}
-                          width={40}
-                          height={40}
-                          className="w-full h-full object-cover"
-                        />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={courseTab}
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="space-y-2"
+                >
+                  {displayedCourses.map((course) => (
+                    <motion.div
+                      key={course.id}
+                      variants={itemVariants}
+                      className="flex items-center justify-between p-2 sm:p-3 rounded-xl hover:bg-[rgba(255,255,255,var(--ui-opacity-5))] transition-colors duration-300"
+                    >
+                      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden bg-[rgba(255,255,255,var(--ui-opacity-5))] border border-white/[0.04] flex-shrink-0">
+                          <Image
+                            src={course.image}
+                            alt={course.name}
+                            width={40}
+                            height={40}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="text-white font-medium text-xs sm:text-sm truncate">{course.name}</span>
                       </div>
-                      <span className="text-white font-medium text-xs sm:text-sm truncate">{course.name}</span>
-                    </div>
-                    <Badge className="bg-[rgba(255,255,255,var(--ui-opacity-10))] text-[var(--text-secondary)] border-[rgba(255,255,255,var(--glass-border-opacity))] px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium flex-shrink-0">
-                      {course.sales} Sales
-                    </Badge>
-                  </div>
-                ))}
-              </div>
+                      <Badge className="bg-[rgba(255,255,255,var(--ui-opacity-10))] text-[var(--text-secondary)] border-[rgba(255,255,255,var(--glass-border-opacity))] px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium flex-shrink-0">
+                        {course.sales} Sales
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </GlassCard>
 

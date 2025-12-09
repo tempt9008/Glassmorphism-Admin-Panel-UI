@@ -2,13 +2,11 @@
 
 import { useState } from "react"
 import { Header } from "@/components/layout"
-import { GlassCard, GlassButton, GlassInput, GlassModal } from "@/components/glass"
-import { DataTable } from "@/components/shared"
+import { GlassButton, GlassInput, GlassModal } from "@/components/glass"
+import { DataTable, PageLayout } from "@/components/shared"
 import { usersData } from "@/lib/mock-data"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import {
-  Plus,
-  Search,
   User,
   Mail,
   Calendar,
@@ -16,16 +14,8 @@ import {
   Edit,
   Trash2,
   Shield,
-  Filter
+  GraduationCap
 } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
   Select,
   SelectContent,
@@ -49,7 +39,6 @@ interface UserData {
 export default function UsersPage() {
   const [users, setUsers] = useState<UserData[]>(usersData)
   const [searchQuery, setSearchQuery] = useState("")
-  const [roleFilter, setRoleFilter] = useState("all")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<UserData | null>(null)
   const [formData, setFormData] = useState({
@@ -59,12 +48,10 @@ export default function UsersPage() {
     status: "active"
   })
 
-  const filteredUsers = users.filter(u => {
-    const matchesSearch = u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.email.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesRole = roleFilter === "all" || u.role === roleFilter
-    return matchesSearch && matchesRole
-  })
+  const filteredUsers = users.filter(u =>
+    u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.email.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const handleAddNew = () => {
     setEditingUser(null)
@@ -214,114 +201,25 @@ export default function UsersPage() {
     <div className="min-h-screen pb-8">
       <Header title="User Management" tabs={navigationTabs} />
 
-      <div className="px-4 sm:px-6 space-y-4 sm:space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <User className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Users</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{users.length}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Admins</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{adminCount}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Instructors</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{instructorCount}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <User className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Students</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{studentCount}</p>
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        {/* Actions Bar */}
-        <GlassCard className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                <GlassInput
-                  placeholder="Search users..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg glass-button text-[var(--text-secondary)] hover:text-white transition-colors flex-shrink-0">
-                    <Filter className="w-4 h-4" />
-                    <span className="hidden sm:inline">Filter</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="glass-dropdown border-[rgba(255,255,255,var(--glass-border-opacity))]">
-                  <DropdownMenuLabel className="text-[var(--text-tertiary)]">Filter by Role</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setRoleFilter("all")}
-                  >
-                    All Roles
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setRoleFilter("Admin")}
-                  >
-                    Admin
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setRoleFilter("Instructor")}
-                  >
-                    Instructor
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer"
-                    onClick={() => setRoleFilter("Student")}
-                  >
-                    Student
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <GlassButton variant="primary" onClick={handleAddNew} className="self-end sm:self-auto">
-              <Plus className="w-4 h-4" />
-              Add User
-            </GlassButton>
-          </div>
-        </GlassCard>
-
-        {/* Users Table */}
-        <DataTable columns={columns} data={filteredUsers} />
+      <div className="px-4 sm:px-6">
+        <PageLayout
+          stats={[
+            { icon: User, label: "Users", value: users.length },
+            { icon: Shield, label: "Admins", value: adminCount },
+            { icon: GraduationCap, label: "Instructors", value: instructorCount },
+            { icon: User, label: "Students", value: studentCount }
+          ]}
+          searchPlaceholder="Search users..."
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterGroups={[
+            { label: "Filter by Role", options: ["All Roles", "Admin", "Instructor", "Student"] }
+          ]}
+          addButtonLabel="Add User"
+          onAddClick={handleAddNew}
+        >
+          <DataTable columns={columns} data={filteredUsers} />
+        </PageLayout>
       </div>
 
       {/* Add/Edit Modal */}

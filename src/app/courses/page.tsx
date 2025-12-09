@@ -3,20 +3,17 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Header } from "@/components/layout"
-import { GlassCard, GlassButton, GlassInput, GlassModal } from "@/components/glass"
-import { DataTable } from "@/components/shared"
+import { GlassButton, GlassInput, GlassModal } from "@/components/glass"
+import { DataTable, PageLayout } from "@/components/shared"
 import { coursesData } from "@/lib/mock-data"
 import {
-  Plus,
-  Search,
-  Filter,
   Edit,
   Trash2,
   Star,
-  MoreVertical,
   BookOpen,
   Users,
-  DollarSign
+  DollarSign,
+  CheckCircle
 } from "lucide-react"
 import {
   Select,
@@ -25,14 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { navigationTabs } from "@/lib/navigation"
 
 interface Course {
@@ -224,111 +213,26 @@ export default function CoursesPage() {
     <div className="min-h-screen pb-8">
       <Header title="Courses Management" tabs={navigationTabs} />
 
-      <div className="px-4 sm:px-6 space-y-4 sm:space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Courses</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{courses.length}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Active</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{activeCourses}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Students</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{totalStudents}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Revenue</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">${(totalRevenue / 1000).toFixed(0)}k</p>
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        {/* Actions Bar */}
-        <GlassCard className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                <GlassInput
-                  placeholder="Search courses..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg glass-button text-[var(--text-secondary)] hover:text-white transition-colors flex-shrink-0">
-                    <Filter className="w-4 h-4" />
-                    <span className="hidden sm:inline">Filter</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="glass-dropdown border-[rgba(255,255,255,var(--glass-border-opacity))]">
-                  <DropdownMenuLabel className="text-[var(--text-tertiary)]">Filter by Status</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    All Courses
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Active
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Draft
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuLabel className="text-[var(--text-tertiary)]">Filter by Category</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Development
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Design
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Marketing
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <GlassButton variant="primary" onClick={handleAddNew} className="self-end sm:self-auto">
-              <Plus className="w-4 h-4" />
-              Add Course
-            </GlassButton>
-          </div>
-        </GlassCard>
-
-        {/* Courses Table */}
-        <DataTable columns={columns} data={filteredCourses} />
+      <div className="px-4 sm:px-6">
+        <PageLayout
+          stats={[
+            { icon: BookOpen, label: "Courses", value: courses.length },
+            { icon: CheckCircle, label: "Active", value: activeCourses },
+            { icon: Users, label: "Students", value: totalStudents },
+            { icon: DollarSign, label: "Revenue", value: `$${(totalRevenue / 1000).toFixed(0)}k` }
+          ]}
+          searchPlaceholder="Search courses..."
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterGroups={[
+            { label: "Filter by Status", options: ["All Courses", "Active", "Draft"] },
+            { label: "Filter by Category", options: ["Development", "Design", "Marketing"] }
+          ]}
+          addButtonLabel="Add Course"
+          onAddClick={handleAddNew}
+        >
+          <DataTable columns={columns} data={filteredCourses} />
+        </PageLayout>
       </div>
 
       {/* Add/Edit Modal */}

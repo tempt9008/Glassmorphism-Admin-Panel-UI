@@ -3,30 +3,19 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Header } from "@/components/layout"
-import { GlassCard, GlassButton, GlassInput, GlassModal } from "@/components/glass"
-import { DataTable } from "@/components/shared"
+import { GlassButton, GlassInput, GlassModal } from "@/components/glass"
+import { DataTable, PageLayout } from "@/components/shared"
 import { ebooksData } from "@/lib/mock-data"
 import {
-  Plus,
-  Search,
   Book,
   Star,
   DollarSign,
   Edit,
   Trash2,
   ShoppingCart,
-  User,
-  Filter
+  User
 } from "lucide-react"
 import { navigationTabs } from "@/lib/navigation"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 interface Ebook {
   id: number
@@ -193,109 +182,31 @@ export default function EbooksPage() {
 
   const totalSales = ebooks.reduce((sum, e) => sum + e.sales, 0)
   const totalRevenue = ebooks.reduce((sum, e) => sum + e.price * e.sales, 0)
+  const avgRating = (ebooks.reduce((sum, e) => sum + e.rating, 0) / ebooks.length).toFixed(1)
 
   return (
     <div className="min-h-screen pb-8">
       <Header title="E-Books" tabs={navigationTabs} />
 
-      <div className="px-4 sm:px-6 space-y-4 sm:space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Book className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">E-Books</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{ebooks.length}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Sales</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">{totalSales}</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Revenue</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">${(totalRevenue / 1000).toFixed(0)}k</p>
-              </div>
-            </div>
-          </GlassCard>
-          <GlassCard className="p-3 sm:p-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-[rgba(255,255,255,var(--ui-opacity-5))] flex items-center justify-center flex-shrink-0">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--text-muted)]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[var(--text-muted)] text-[10px] sm:text-sm truncate">Rating</p>
-                <p className="text-lg sm:text-2xl font-bold text-white">
-                  {(ebooks.reduce((sum, e) => sum + e.rating, 0) / ebooks.length).toFixed(1)}
-                </p>
-              </div>
-            </div>
-          </GlassCard>
-        </div>
-
-        {/* Actions Bar */}
-        <GlassCard className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                <GlassInput
-                  placeholder="Search e-books..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg glass-button text-[var(--text-secondary)] hover:text-white transition-colors flex-shrink-0">
-                    <Filter className="w-4 h-4" />
-                    <span className="hidden sm:inline">Filter</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="glass-dropdown border-[rgba(255,255,255,var(--glass-border-opacity))]">
-                  <DropdownMenuLabel className="text-[var(--text-tertiary)]">Filter by Category</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[rgba(255,255,255,var(--ui-opacity-10))]" />
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    All E-Books
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Development
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Design
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-[var(--text-secondary)] focus:bg-[rgba(255,255,255,var(--ui-opacity-10))] focus:text-white cursor-pointer">
-                    Marketing
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <GlassButton variant="primary" onClick={handleAddNew} className="self-end sm:self-auto">
-              <Plus className="w-4 h-4" />
-              Add E-Book
-            </GlassButton>
-          </div>
-        </GlassCard>
-
-        {/* E-Books Table */}
-        <DataTable columns={columns} data={filteredEbooks} />
+      <div className="px-4 sm:px-6">
+        <PageLayout
+          stats={[
+            { icon: Book, label: "E-Books", value: ebooks.length },
+            { icon: ShoppingCart, label: "Sales", value: totalSales },
+            { icon: DollarSign, label: "Revenue", value: `$${(totalRevenue / 1000).toFixed(0)}k` },
+            { icon: Star, label: "Rating", value: avgRating }
+          ]}
+          searchPlaceholder="Search e-books..."
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+          filterGroups={[
+            { label: "Filter by Category", options: ["All E-Books", "Development", "Design", "Marketing"] }
+          ]}
+          addButtonLabel="Add E-Book"
+          onAddClick={handleAddNew}
+        >
+          <DataTable columns={columns} data={filteredEbooks} />
+        </PageLayout>
       </div>
 
       {/* Add/Edit Modal */}
